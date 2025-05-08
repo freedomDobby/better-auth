@@ -1,0 +1,26 @@
+{
+  "extends": "./tsconfig.base.json",
+  "types": ["@nuxt/nitro", "node"],
+  "include": [
+    "shims-vue.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.vue",
+    "prettier.config.cjs"
+  ],
+  "compilerOptions": {
+    "noEmit": true,
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "strict": true,
+    "jsx": "preserve",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "baseUrl": ".",
+    "typeRoots": ["./node_modules/@types"]
+  }
+}
