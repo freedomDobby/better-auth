@@ -5,17 +5,26 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-console.log("password ))", process.env.MAIN_VITE_DB_PASSWORD)
+
+export const pool = new Pool({
+  host: 'localhost',
+  user: 'postgres',
+  port: Number(process.env.MAIN_VITE_DB_PORT),
+  password: process.env.MAIN_VITE_DB_PASSWORD,
+  database: process.env.MAIN_VITE_DB_DATABASE,
+});
 
 export const auth = betterAuth({
-  database: new Pool({
-    host: 'localhost',
-    user: 'postgres',
-    port: Number(process.env.MAIN_VITE_DB_PORT),
-    password: process.env.MAIN_VITE_DB_PASSWORD,
-    database: process.env.MAIN_VITE_DB_DATABASE,
-  })
-})
+  database: pool,
+  emailAndPassword: {
+    enabled: true,
+    disableSignUp: false,
+    requireEmailVerification: true,
+    minPasswordLength: 8,
+    maxPasswordLength: 128,
+    autoSignIn: true,
+  },
+});
 
 // const AppDataSource = new DataSource({
 //   type: 'postgres',

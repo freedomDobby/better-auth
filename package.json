@@ -35,7 +35,8 @@
     "typeorm": "^0.3.22",
     "typeorm-naming-strategies": "^4.1.0",
     "vue": "^3.5.13",
-    "vue-router": "^4.5.0"
+    "vue-router": "^4.5.0",
+    "vuetify": "^3.8.4"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",

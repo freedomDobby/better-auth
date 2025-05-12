@@ -127,6 +127,7 @@ const testAuth = async () => {
     email: email.value,
     password: password.value,
   }
+  // console.log(user.password)
 
   await signUp.email({
     email: user.email,
@@ -136,6 +137,7 @@ const testAuth = async () => {
     fetchOptions: {
       onError(context) {
         alert(context.error.message)
+        console.log(context.error.message)
       },
       onSuccess() {
         useRouter().push('/dashboard')

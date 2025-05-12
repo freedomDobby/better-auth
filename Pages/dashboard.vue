@@ -1,45 +1,53 @@
-<script setup lang="ts">
-import { useSession } from '../composables/auth/useAuthClient.ts'
-const { data: session } = await useSession(useFetch)
-</script>
-
 <template>
-  <div
-    class="min-h-[80vh] flex items-center justify-center overflow-hidden no-visible-scrollbar px-6 md:px-0"
-  >
-    <Card class="w-[350px]">
-      <CardHeader>
-        <CardTitle> User </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div class="flex gap-2 items-center">
-          <Avatar>
-            <AvatarImage :src="session?.user.image || ''" alt="User profile" />
-            <AvatarFallback>{{ session?.user.name[0] }}</AvatarFallback>
-          </Avatar>
+  <div class="d-flex align-center justify-center" style="border: 1px solid red">
+    <v-card class="pa-4" min-width="350">
+      <v-card-title>User</v-card-title>
+
+      <v-card-text>
+        <div class="d-flex align-center gap-2">
+          <!-- <v-avatar size="40" class="mr-3">
+            <v-img :src="session?.user.image || ''" />
+          </v-avatar> -->
+
           <div>
-            <p class="text-sm">
-              {{ session?.user?.name }}
-            </p>
-            <p class="text-xs">
-              {{ session?.user?.email }}
-            </p>
+            <p class="text-subtitle-2 mb-1">{{ session?.user?.name }}</p>
+            <p class="text-caption">{{ session?.user?.email }}</p>
           </div>
         </div>
-      </CardContent>
-      <CardFooter>
-        <Button
-          @click="
-            async () => {
-              await signOut()
-              // router.push('/')
-            }
-          "
-          variant="secondary"
-        >
-          Sing Out
-        </Button>
-      </CardFooter>
-    </Card>
+      </v-card-text>
+
+      <v-card-actions>
+        <!-- 버튼이나 다른 푸터 컨텐츠가 있다면 여기에 추가 -->
+        <v-btn prepend-icon="$vuetify" @click="goBack"> 확인</v-btn>
+      </v-card-actions>
+    </v-card>
   </div>
 </template>
+
+<script setup>
+import { useSession } from '../composables/auth/useAuthClient.ts'
+const { data: session } = await useSession(useFetch)
+
+const goBack = () => {
+  useRouter().push('/test')
+}
+</script>
+
+<style scoped>
+.container {
+  border: 1px solid red;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* no-visible-scrollbar */
+.container::-webkit-scrollbar {
+  display: none;
+}
+.container {
+  -ms-overflow-style: none; /* IE/Edge */
+  scrollbar-width: none; /* Firefox */
+}
+</style>

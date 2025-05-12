@@ -2,7 +2,7 @@ import { defineNuxtConfig } from 'nuxt/config'
 
 export default defineNuxtConfig({
   modules: ['@nuxtjs/tailwindcss'],
-  css: ['@/assets/css/tailwind.css'],
+  css: ['@/assets/css/tailwind.css', 'vuetify/styles'],
   devtools: { enabled: true },
   compatibilityDate: '2025-04-25',
   app: {
@@ -20,7 +20,7 @@ export default defineNuxtConfig({
     }
   },
   typescript: {
-    strict: true
+    strict: true,
   }, runtimeConfig: {
     MAIN_VITE_DB_PASSWORD: process.env.MAIN_VITE_DB_PASSWORD,
     MAIN_VITE_DB_PORT: process.env.MAIN_VITE_DB_PORT,

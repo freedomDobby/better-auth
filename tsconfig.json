@@ -6,7 +6,12 @@
     "**/*.ts",
     "**/*.tsx",
     "**/*.vue",
-    "prettier.config.cjs"
+    "prettier.config.cjs",
+    "server/**/*.ts",
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue"
   ],
   "compilerOptions": {
     "noEmit": true,
