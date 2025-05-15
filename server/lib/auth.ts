@@ -20,9 +20,9 @@ export const auth = betterAuth({
     enabled: true,
     disableSignUp: false,
     requireEmailVerification: true,
+    autoSignIn: false,
     minPasswordLength: 8,
     maxPasswordLength: 128,
-    autoSignIn: true,
   },
 });
 
@@ -46,4 +46,3 @@ export const auth = betterAuth({
 //     console.error('❌ Error during Data Source initialization', err)
 //   }
 // }
-

@@ -1,5 +1,6 @@
-import { auth } from "../../server/database/database";
+import { auth } from "../../lib/auth";
 import { defineEventHandler, toWebRequest } from 'h3';
+
 
 const pool = auth.options.database; // better-auth 내부의 Pool 인스턴스
 

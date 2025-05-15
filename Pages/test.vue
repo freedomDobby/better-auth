@@ -134,13 +134,14 @@ const testAuth = async () => {
     password: user.password,
     name: user.name,
     callbackURL: '/email',
+    // role: 'user',
     fetchOptions: {
       onError(context) {
         alert(context.error.message)
-        console.log(context.error.message)
+        console.log(context.error)
       },
       onSuccess() {
-        useRouter().push('/dashboard')
+        useRouter().push('/profile')
       },
     },
   })
