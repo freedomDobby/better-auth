@@ -33,17 +33,11 @@
           <a>id/pw 찾기</a>
         </div>
         <div class="container">
+          <!-- <div class="btn-box" v-if="session?.user?.emailVerified">
+            <button type="submit" @click="handleVerification">Verified</button>
+          </div> -->
           <div class="btn-box">
             <button type="submit" @click="handleSignIn">LOGIN</button>
-          </div>
-          <div class="btn-box">
-            <button
-              v-if="!session?.user?.emailVerified"
-              type="submit"
-              @click="handleVerification"
-            >
-              Verified
-            </button>
           </div>
           <div class="btn-box">
             <button
@@ -80,12 +74,35 @@ import {
 import { useRouter } from 'vue-router'
 
 const session = useSession()
-const router = useRouter()
+const route = useRouter()
 
-// Login
+// user
 const id = ref('')
 const pw = ref('')
 const error = ref('')
+
+// 이메일 인증 처리 로직
+const handleVerification = async () => {
+  try {
+    const response = await sendVerificationEmail({
+      email: id.value,
+      callbackURL: 'http://localhost:3000/profile',
+    })
+
+    // Better Auth는 응답 안에 code나 status 등의 실패 정보를 담을 수도 있음
+    if (response?.code === 'VERIFICATION_EMAIL_ISNT_ENABLED') {
+      alert('이메일 인증이 비활성화되어 있습니다.')
+      console.error('Better Auth 에러:', response)
+      return
+    }
+    alert('인증 이메일을 보냈습니다.')
+  } catch (err) {
+    alert('인증 메일 전송 실패')
+    console.error('sendVerificationEmail 호출 실패:', err)
+  }
+}
+
+// Login
 
 const handleSignIn = async () => {
   error.value = null // 기존 오류 초기화
@@ -109,32 +126,17 @@ const handleSignIn = async () => {
         console.log('👤 userInfo', userInfo)
 
         if (!userInfo.user.emailVerified) {
-          router.push('/profile')
-        } else {
-          alert('이메일 완료')
-          router.push('/profile')
+          if (confirm('❌ 이메일 인증 하기')) handleVerification()
+          else alert('로그인 실패')
         }
       },
       onError(context) {
-        console.error('❌ 로그인 실패 전체 context:', context)
-        console.error('🧨 에러 메시지:', context.error?.message)
-        console.error('🧨 에러 응답:', context.error?.response?.data)
+        if (confirm('❌ 로그인 실패 : ', context.error?.message))
+          route.push('/test')
+        else alert('로그인 실패')
       },
     },
   )
-}
-
-// 이메일 인증 처리 로직
-const handleVerification = async () => {
-  try {
-    await sendVerificationEmail({
-      email: id.value,
-    })
-    alert('인증 이메일을 보냈습니다.')
-  } catch (err) {
-    console.error('❌ 이메일 인증 요청 실패:', err)
-    alert('인증 메일 전송 실패')
-  }
 }
 </script>
 
