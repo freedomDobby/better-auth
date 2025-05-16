@@ -7,7 +7,6 @@
       <NuxtLink to="/iphone">Iphones</NuxtLink>
       <NuxtLink to="/profile">Profile</NuxtLink>
     </nav>
-
     <div class="content-box">
       <slot />
     </div>

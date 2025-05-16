@@ -54,12 +54,6 @@
         </div>
       </form>
     </div>
-    <!-- session이 null이 아닌 경우 - 로그인 회원 ✅ -->
-    <!-- <div v-else class="success-container">
-      <ul v-for="user in session">
-        <li>{{ user }}</li>
-      </ul>
-    </div> -->
   </div>
 </template>
 
@@ -80,6 +74,7 @@ const route = useRouter()
 const id = ref('')
 const pw = ref('')
 const error = ref('')
+const user = useUser()
 
 // 이메일 인증 처리 로직
 const handleVerification = async () => {
@@ -123,12 +118,12 @@ const handleSignIn = async () => {
       onSuccess(context) {
         console.log('✅ 로그인 성공!', context.data)
         const userInfo = context.data
-        console.log('👤 userInfo', userInfo)
-
+        console.log('👤 userInfo', userInfo.user)
+        user.value = userInfo.user.name
         if (!userInfo.user.emailVerified) {
           if (confirm('❌ 이메일 인증 하기')) handleVerification()
           else alert('로그인 실패')
-        }
+        } else route.push('/profile')
       },
       onError(context) {
         if (confirm('❌ 로그인 실패 : ', context.error?.message))

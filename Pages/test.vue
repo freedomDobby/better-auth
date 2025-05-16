@@ -50,11 +50,6 @@
                 />
               </form>
               <button @click="testAuth" class="btn-test">가입</button>
-              <form v-if="authCheck">
-                <label for="email">인증번호</label>
-                <input type="text" v-model="authText" required />
-                <button class="btn-test">인증</button>
-              </form>
             </div>
           </td>
         </tr>
