@@ -1,6 +1,8 @@
 import { createAuthClient } from "better-auth/client";
 import { twoFactor } from "better-auth/plugins";
+import { adminClient } from "better-auth/client/plugins"
 import { sendEmail } from "./email";
+
 
 
 export const authClient = createAuthClient({
@@ -15,12 +17,13 @@ export const authClient = createAuthClient({
             console.error("❌ 사용자 이메일이 없습니다.");
             return;
           }
+          console.log('💌 sendOTP ', request)
 
           try {
             await sendEmail({
               to: email,
               subject: "🔐 2단계 인증 코드",
-              text: `<p>당신의 인증 코드는 <strong>${otp}</strong> 입니다.</p>`,
+              html: `<p>당신의 인증 코드는 <strong>${otp}</strong> 입니다.</p>`,
             });
 
             console.log("📨 OTP 이메일 전송 완료:", email);
@@ -30,5 +33,7 @@ export const authClient = createAuthClient({
         },
       },
     }),
+    adminClient()
   ],
-});
+}) as any;
+

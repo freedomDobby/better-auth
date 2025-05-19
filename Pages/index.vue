@@ -108,30 +108,35 @@ const handleSignIn = async () => {
       console.log('세션 갱신됨 👉', newVal)
     },
   )
-
-  await signIn.email(
-    {
-      email: id.value,
-      password: pw.value,
-    },
-    {
-      onSuccess(context) {
-        console.log('✅ 로그인 성공!', context.data)
-        const userInfo = context.data
-        console.log('👤 userInfo', userInfo.user)
-        user.value = userInfo.user.name
-        if (!userInfo.user.emailVerified) {
-          if (confirm('❌ 이메일 인증 하기')) handleVerification()
+  console.log(session.value)
+  if (session.value.data !== null) {
+    console.log('true::::', session.value)
+    await signIn.email(
+      {
+        email: id.value,
+        password: pw.value,
+      },
+      {
+        onSuccess(context) {
+          console.log('✅ 로그인 성공!', context.data)
+          const userInfo = context.data
+          console.log('👤 userInfo', userInfo.user)
+          user.value = userInfo.user.name
+          if (!userInfo.user.emailVerified) {
+            if (confirm('❌ 이메일 인증 하기')) handleVerification()
+            else alert('로그인 실패')
+          } else route.push('/profile')
+        },
+        onError(context) {
+          console.log('onError::::', session.value)
+          if (confirm('❌ 로그인 실패 : ', context)) route.push('/test')
           else alert('로그인 실패')
-        } else route.push('/profile')
+        },
       },
-      onError(context) {
-        if (confirm('❌ 로그인 실패 : ', context.error?.message))
-          route.push('/test')
-        else alert('로그인 실패')
-      },
-    },
-  )
+    )
+  } else {
+    handleVerification()
+  }
 }
 </script>
 

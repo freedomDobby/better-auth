@@ -3,6 +3,8 @@ import { betterAuth } from "better-auth";
 import { Pool } from "pg";
 import dotenv from 'dotenv';
 import { sendEmail } from "./email";
+import { admin } from "better-auth/plugins"
+import { authClient } from "./auth-client"
 
 dotenv.config();
 
@@ -48,5 +50,8 @@ export const auth = betterAuth({
         `,
       });
     },
-  }
+  }, plugins: [
+    admin(),
+  ]
 });
+

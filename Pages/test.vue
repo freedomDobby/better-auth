@@ -64,7 +64,8 @@
         </tr>
         <tr>
           <td>{{ result_OPOSSUM || '-' }}</td>
-          <td>{{ result_BetterAuth || '-' }}</td>
+          <!-- <td>{{ result_BetterAuth || '-' }}</td> -->
+          <td>{{ users }}</td>
         </tr>
       </tbody>
     </table>
@@ -72,7 +73,7 @@
 </template>
 
 <script setup>
-import { signUp } from '../composables/auth/useAuthClient.ts'
+import { signUp, admin } from '../composables/auth/useAuthClient.ts'
 
 // 테스트용 API 호출 함수
 const testApiCall = () => {
@@ -141,6 +142,25 @@ const testAuth = async () => {
     },
   })
 }
+
+// admin
+// const newUser = await admin.createUser({
+//   name: 'Test User',
+//   email: 'test@example.com',
+//   password: 'password123',
+//   role: 'admin',
+//   data: {
+//     customField: 'customValue',
+//   },
+// })
+
+const pageSize = 10
+
+const users = await admin.listUsers({
+  query: {
+    limit: pageSize,
+  },
+})
 </script>
 
 <style>

@@ -2,6 +2,7 @@ import { defineNuxtConfig } from 'nuxt/config'
 
 export default defineNuxtConfig({
   modules: ['@nuxtjs/tailwindcss'],
+
   css: ['@/assets/css/tailwind.css', 'vuetify/styles'],
   devtools: { enabled: true },
   compatibilityDate: '2025-04-25',
