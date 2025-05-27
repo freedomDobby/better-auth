@@ -6,7 +6,7 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 
 
-// console.log("🔑 password: ", process.env.DATABASE_PASSWORD)
+console.log("🔑 password: ", process.env.DATABASE_PASSWORD)
 // console.log("🔑 host: ", process.env.DATABASE_HOST)
 
 @Module({
