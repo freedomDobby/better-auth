@@ -10,7 +10,7 @@
       </tr>
     </thead>
     <tbody class="tbody-row">
-      <tr v-for="(movie, index) in movieList" :key="index">
+      <tr v-for="(movie, index) in list" :key="index">
         <td @click="goDetail(movie.id)">{{ movie.id }}</td>
         <td>{{ movie.title }}</td>
         <td>{{ movie.director }}</td>
@@ -22,10 +22,7 @@
 </template>
 
 <script setup lang="ts">
-import { useRouter } from 'vue-router'
-import { ref } from 'vue'
-
-const route = useRouter()
+import { ref, watch, toRef } from 'vue'
 
 const movie = ref({
   id: 0,
@@ -36,6 +33,7 @@ const movie = ref({
 })
 
 const movieList = ref([movie.value])
+
 // Get
 try {
   const response = await fetch('http://localhost:5000/movies', {
@@ -51,6 +49,25 @@ try {
 } catch (error) {
   console.error('❌ Error fetching movies:', error)
 }
+
+// Searching
+const props = defineProps({
+  searching: String,
+})
+const searchingRef = toRef(props, 'searching')
+const searchingList = ref([movie.value])
+const list = ref(movieList.value)
+
+watch(searchingRef, (newValue) => {
+  // console.log('🔍 Searching:', newValue)
+  if (newValue) {
+    searchingList.value = movieList.value.filter((movie) =>
+      movie.title.toLowerCase().includes(newValue.toLowerCase()),
+    )
+    list.value = searchingList.value
+    // console.log(newValue)
+  } else list.value = movieList.value
+})
 
 const emit = defineEmits(['deliverId'])
 

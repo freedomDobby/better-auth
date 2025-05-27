@@ -36,18 +36,22 @@
             type="text"
             name="searchingTitle"
             id="searchingTitle"
+            v-model="searchingTitle"
             class="block min-w-0 grow py-1.5 pr-3 pl-1 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6"
             placeholder="Searching Movie"
           />
         </div>
-        <readMovieList @deliverId="handleDeliverId" />
+        <readMovieList
+          @deliverId="handleDeliverId"
+          :searching="searchingTitle"
+        />
       </div>
 
       <div v-else-if="activeTab === '영화 디테일'">
         <!-- 디테일 -->
         <p class="text-lg font-bold mb-2">영화 디테일</p>
         <div v-if="!movieId">
-          <p>선택된 영화의 상세 정보가 표시됩니다. {{ movieId }}</p>
+          <p>선택된 영화의 상세 정보가 표시됩니다.</p>
         </div>
         <detailMovie v-else :id="movieId" />
       </div>
@@ -67,7 +71,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 
 // component
 import createMovie from './createMovie.vue'
@@ -79,6 +83,11 @@ const tabs = ['영화등록', '전체 리스트', '영화 디테일', '수정']
 const activeTab = ref('영화등록')
 
 const movieId = ref()
+const searchingTitle = ref('')
+
+// watch(searchingTitle, (newValue) => {
+//   console.log('🔍 검색어:', newValue)
+// })
 
 // detail
 const movie = ref({
