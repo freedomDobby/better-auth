@@ -23,10 +23,19 @@
 
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
+import { ref } from 'vue'
 
 const route = useRouter()
 
-const movieList = ref([{}])
+const movie = ref({
+  id: 0,
+  title: '',
+  director: '',
+  genre: '',
+  release_date: '',
+})
+
+const movieList = ref([movie.value])
 // Get
 try {
   const response = await fetch('http://localhost:5000/movies', {
@@ -43,8 +52,10 @@ try {
   console.error('❌ Error fetching movies:', error)
 }
 
+const emit = defineEmits(['deliverId'])
+
 const goDetail = (movieId: number) => {
-  route.push(`/movies/${movieId}`)
+  emit('deliverId', movieId)
 }
 </script>
 

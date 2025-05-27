@@ -1,0 +1,83 @@
+<template>
+  <div class="detail-card">
+    <p><span>🎞 제목:</span> {{ movie.title }}</p>
+    <p><span>🎬 감독:</span> {{ movie.director }}</p>
+    <p><span>📚 장르:</span> {{ movie.genre }}</p>
+    <p><span>📅 개봉일:</span> {{ movie.release_date }}</p>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref } from 'vue'
+import { useRoute } from 'vue-router'
+
+const route = useRoute()
+
+const movie = ref({
+  title: '',
+  director: '',
+  genre: '',
+  release_date: '',
+})
+const props = defineProps({
+  id: Number,
+})
+
+console.log('id))))', props.id)
+
+// GetOne
+try {
+  const response = await fetch(`http://localhost:5000/movies/${props.id}`, {
+    method: 'GET',
+  })
+
+  if (!response.ok) {
+    throw new Error(`❌ Failed to fetch movie: ${response.statusText}`)
+  }
+
+  const result = await response.json()
+  movie.value = result
+  console.log('✅ Movie fetched successfully:', movie.value)
+} catch (error) {
+  console.error('❌ Error fetching movie:', error)
+}
+
+// searching
+const searching = ref('')
+</script>
+
+<style scoped>
+.label-css {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.input-css,
+.select-css {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+}
+
+.submit-btn {
+  padding: 0.5rem 1rem;
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 0.375rem;
+  cursor: pointer;
+}
+
+.submit-btn:hover {
+  background-color: #2563eb;
+}
+
+.flex-box {
+  display: flex;
+  justify-content: flex-start;
+  gap: 5%;
+  margin-bottom: 3%;
+}
+</style>

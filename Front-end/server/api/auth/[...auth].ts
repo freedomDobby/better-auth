@@ -6,7 +6,7 @@ const pool = auth.options.database; // better-auth 내부의 Pool 인스턴스
 
 export default defineEventHandler(async (event) => {
   console.log("💫 Incoming auth request");
-  // console.log("🛸 Pool", pool)
+  console.log("🛸 Pool", pool)
 
   try {
     const result = await pool.query('SELECT current_database();');

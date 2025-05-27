@@ -24,7 +24,7 @@ export default defineNuxtConfig({
     strict: true,
   }, runtimeConfig: {
     MAIN_VITE_DB_PASSWORD: process.env.MAIN_VITE_DB_PASSWORD,
-    MAIN_VITE_DB_PORT: process.env.MAIN_VITE_DB_PORT,
+    MAIN_VITE_DB_PORT: Number(process.env.MAIN_VITE_DB_PORT),
     MAIN_VITE_DB_DATABASE: process.env.MAIN_VITE_DB_DATABASE,
   }
 })

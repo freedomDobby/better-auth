@@ -90,7 +90,7 @@ const onSubmit = async () => {
     title: title.value,
     director: director.value,
     genre: genre.value,
-    releaseDate: releaseDate.value,
+    release_date: releaseDate.value,
   }
 
   // API

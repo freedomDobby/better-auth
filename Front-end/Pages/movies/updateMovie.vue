@@ -52,7 +52,9 @@
   </div>
 
   <div style="margin-top: 5%">
-    <button type="submit" class="submit-btn">수정하기</button>
+    <button type="submit" class="submit-btn" @click="updateMovie()">
+      수정하기
+    </button>
     <button type="submit" class="delete-btn">삭제하기</button>
   </div>
 </template>
@@ -63,20 +65,27 @@ import { useRoute } from 'vue-router'
 
 const route = useRoute()
 // component
-import createMovie from './createMovie'
-import readMovieList from './readMovieList'
 
-const tabs = ['영화등록', '전체 리스트', '영화 디테일', '수정']
-const activeTab = ref('영화 디테일')
+const props = defineProps({
+  id: Number,
+})
 
-const movie = ref({})
-const movieId = route.params.id
+const movie = ref({
+  title: '',
+  director: '',
+  genre: '',
+  release_date: '',
+})
 
-// console.log(movieId.id)
+// movie Info
+const title = ref('')
+const director = ref('')
+const genre = ref('')
+const releaseDate = ref('')
 
 // GetOne
 try {
-  const response = await fetch(`http://localhost:5000/movies/${movieId}`, {
+  const response = await fetch(`http://localhost:5000/movies/${props.id}`, {
     method: 'GET',
   })
 
@@ -89,6 +98,36 @@ try {
   console.log('✅ Movie fetched successfully:', movie.value)
 } catch (error) {
   console.error('❌ Error fetching movie:', error)
+}
+
+// updateMocive
+const updateMovie = async () => {
+  const movieInfo = {
+    title: title.value,
+    director: director.value,
+    genre: genre.value,
+    release_date: releaseDate.value,
+  }
+
+  try {
+    const response = await fetch(`http://localhost:5000/movies/updateMovie`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(movieInfo),
+    })
+
+    if (!response.ok) {
+      throw new Error(`Failed to update movie: ${response.statusText}`)
+    }
+
+    const result = await response.json()
+    console.log('✅ Movie updated successfully:', result)
+    // 필요 시 성공 후 후처리
+  } catch (error) {
+    console.error('❌ Error updating movie:', error)
+  }
 }
 </script>
 

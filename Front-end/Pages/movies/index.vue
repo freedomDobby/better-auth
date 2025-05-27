@@ -30,24 +30,37 @@
 
       <div v-else-if="activeTab === '전체 리스트'">
         <!-- 전체 리스트 -->
-        <p class="text-lg font-bold mb-2">전체 리스트</p>
-        <readMovieList />
+        <div class="flex-box">
+          <p class="text-lg font-bold mb-2">전체 리스트</p>
+          <input
+            type="text"
+            name="searchingTitle"
+            id="searchingTitle"
+            class="block min-w-0 grow py-1.5 pr-3 pl-1 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6"
+            placeholder="Searching Movie"
+          />
+        </div>
+        <readMovieList @deliverId="handleDeliverId" />
       </div>
 
       <div v-else-if="activeTab === '영화 디테일'">
         <!-- 디테일 -->
-        <div class="detail-card">
-          <p><span>🎞 제목:</span> {{ movie.title }}</p>
-          <p><span>🎬 감독:</span> {{ movie.director }}</p>
-          <p><span>📚 장르:</span> {{ movie.genre }}</p>
-          <p><span>📅 개봉일:</span> {{ movie.release_date }}</p>
+        <p class="text-lg font-bold mb-2">영화 디테일</p>
+        <div v-if="!movieId">
+          <p>선택된 영화의 상세 정보가 표시됩니다. {{ movieId }}</p>
         </div>
+        <detailMovie v-else :id="movieId" />
       </div>
 
       <div v-else-if="activeTab === '수정'">
         <!-- 수정 -->
         <p class="text-lg font-bold mb-2">영화 수정</p>
-        <updateMovie />
+        <div v-if="!movieId">
+          <p>영화 정보를 수정하는 폼입니다.</p>
+        </div>
+        <div v-else>
+          <UpdateMovie :id="movieId" />
+        </div>
       </div>
     </div>
   </div>
@@ -55,37 +68,30 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useRoute } from 'vue-router'
 
-const route = useRoute()
 // component
-import createMovie from './createMovie'
-import readMovieList from './readMovieList'
-import updateMovie from './updateMovie'
+import createMovie from './createMovie.vue'
+import readMovieList from './readMovieList.vue'
+import UpdateMovie from './updateMovie.vue'
+import detailMovie from './detailMovie.vue'
 
 const tabs = ['영화등록', '전체 리스트', '영화 디테일', '수정']
-const activeTab = ref('영화 디테일')
+const activeTab = ref('영화등록')
 
-const movie = ref({})
-const movieId = route.params.id
+const movieId = ref()
 
-// console.log(movieId.id)
+// detail
+const movie = ref({
+  title: '',
+  director: '',
+  genre: '',
+  release_date: '',
+})
 
-// GetOne
-try {
-  const response = await fetch(`http://localhost:5000/movies/${movieId}`, {
-    method: 'GET',
-  })
-
-  if (!response.ok) {
-    throw new Error(`❌ Failed to fetch movie: ${response.statusText}`)
-  }
-
-  const result = await response.json()
-  movie.value = result
-  console.log('✅ Movie fetched successfully:', movie.value)
-} catch (error) {
-  console.error('❌ Error fetching movie:', error)
+const handleDeliverId = (id: number, active: string) => {
+  movieId.value = id
+  activeTab.value = '영화 디테일'
+  console.log('movieId : ', movieId.value)
 }
 </script>
 
@@ -115,5 +121,12 @@ try {
 
 .submit-btn:hover {
   background-color: #2563eb;
+}
+
+.flex-box {
+  display: flex;
+  justify-content: flex-start;
+  gap: 5%;
+  margin-bottom: 3%;
 }
 </style>
