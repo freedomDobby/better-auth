@@ -54,7 +54,11 @@
           <p>선택된 영화의 상세 정보가 표시됩니다.</p>
         </div>
         <div v-else>
-          <detailMovie :id="movieId" @deliverProps="handleDeliverId" />
+          <detailMovie
+            :id="movieId"
+            @deliverProps="handleDeliverId"
+            @deliverCheck="handleMove"
+          />
         </div>
       </div>
 
@@ -87,10 +91,6 @@ const activeTab = ref('영화등록')
 const movieId = ref()
 const searchingTitle = ref('')
 
-// watch(searchingTitle, (newValue) => {
-//   console.log('🔍 검색어:', newValue)
-// })
-
 // detail
 const movie = ref({
   title: '',
@@ -102,7 +102,12 @@ const movie = ref({
 const handleDeliverId = (id: number, active: string) => {
   movieId.value = id
   activeTab.value = '영화 디테일'
-  console.log('movieId : ', movieId.value)
+  // console.log('movieId : ', movieId.value)
+}
+
+const handleMove = (check: boolean) => {
+  if (check) activeTab.value = '수정'
+  // console.log(check)
 }
 </script>
 

@@ -6,6 +6,9 @@
     <p><span>📅 개봉일:</span> {{ movie.release_date }}</p>
 
     <div class="flex-box" style="justify-content: end">
+      <button type="submit" class="submit-btn" @click="updateMovie()">
+        수정하기
+      </button>
       <button type="submit" class="delete-btn" @click="deleteMovie()">
         삭제하기
       </button>
@@ -15,9 +18,6 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useRoute } from 'vue-router'
-
-const route = useRoute()
 
 const movie = ref({
   title: '',
@@ -28,8 +28,6 @@ const movie = ref({
 const props = defineProps({
   id: Number,
 })
-
-console.log('id))))', props.id)
 
 // GetOne
 try {
@@ -48,7 +46,7 @@ try {
   console.error('❌ Error fetching movie:', error)
 }
 
-const emit = defineEmits(['deliverProps'])
+const emit = defineEmits(['deliverProps', 'deliverCheck'])
 
 // Delete
 const deleteMovie = () => {
@@ -71,6 +69,10 @@ const deleteMovie = () => {
         alert('❌ Failed to delete movie.')
       })
   }
+}
+
+const updateMovie = () => {
+  emit('deliverCheck', true)
 }
 </script>
 
@@ -106,6 +108,16 @@ const deleteMovie = () => {
   display: flex;
   justify-content: flex-start;
   gap: 5%;
+}
+
+.submit-btn {
+  padding: 0.5rem 1rem;
+  margin-top: 3%;
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 0.375rem;
+  cursor: pointer;
 }
 
 .delete-btn {
