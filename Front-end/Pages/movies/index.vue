@@ -49,11 +49,13 @@
 
       <div v-else-if="activeTab === '영화 디테일'">
         <!-- 디테일 -->
-        <p class="text-lg font-bold mb-2">영화 디테일</p>
+        <p class="text-lg font-bold mb-2">영화 디테일 {{ movieId }}</p>
         <div v-if="!movieId">
           <p>선택된 영화의 상세 정보가 표시됩니다.</p>
         </div>
-        <detailMovie v-else :id="movieId" />
+        <div v-else>
+          <detailMovie :id="movieId" @deliverProps="handleDeliverId" />
+        </div>
       </div>
 
       <div v-else-if="activeTab === '수정'">

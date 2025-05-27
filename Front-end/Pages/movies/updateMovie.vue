@@ -60,6 +60,7 @@
 </template>
 
 <script setup lang="ts">
+import { any } from 'better-auth/*'
 import { ref } from 'vue'
 import { useRoute } from 'vue-router'
 
@@ -100,13 +101,21 @@ try {
   console.error('❌ Error fetching movie:', error)
 }
 
-// updateMocive
+const movieInfo: Record<string, string> = {}
+
+// updateMoive
 const updateMovie = async () => {
-  const movieInfo = {
+  const updateInfo = {
     title: title.value,
     director: director.value,
     genre: genre.value,
-    release_date: releaseDate.value,
+    releaseDate: releaseDate.value,
+  }
+
+  for (const key in updateInfo) {
+    const value = updateInfo[key as keyof typeof updateInfo]
+    // console.log('updateInfo )))', updateInfo[key as keyof typeof updateInfo])
+    if (value) movieInfo[key] = value
   }
 
   try {
@@ -115,7 +124,7 @@ const updateMovie = async () => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(movieInfo),
+      body: JSON.stringify({ updateInfo: { id: props.id, ...movieInfo } }),
     })
 
     if (!response.ok) {
@@ -124,9 +133,11 @@ const updateMovie = async () => {
 
     const result = await response.json()
     console.log('✅ Movie updated successfully:', result)
+    alert('✅ Movie updated successfully')
     // 필요 시 성공 후 후처리
   } catch (error) {
     console.error('❌ Error updating movie:', error)
+    alert('❌ Error updating movie')
   }
 }
 </script>

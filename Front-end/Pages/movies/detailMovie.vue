@@ -4,6 +4,12 @@
     <p><span>🎬 감독:</span> {{ movie.director }}</p>
     <p><span>📚 장르:</span> {{ movie.genre }}</p>
     <p><span>📅 개봉일:</span> {{ movie.release_date }}</p>
+
+    <div class="flex-box" style="justify-content: end">
+      <button type="submit" class="delete-btn" @click="deleteMovie()">
+        삭제하기
+      </button>
+    </div>
   </div>
 </template>
 
@@ -42,8 +48,30 @@ try {
   console.error('❌ Error fetching movie:', error)
 }
 
-// searching
-const searching = ref('')
+const emit = defineEmits(['deliverProps'])
+
+// Delete
+const deleteMovie = () => {
+  const result = confirm('👀 Are you sure you want to delete the movie?')
+  if (result) {
+    fetch(`http://localhost:5000/movies/deleteMovie`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ movieId: props.id }),
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error('Failed to delete')
+        alert('✅ Movie deleted successfully!')
+        emit('deliverProps', null)
+      })
+      .catch((err) => {
+        console.error(typeof JSON.stringify({ movieId: props.id }))
+        alert('❌ Failed to delete movie.')
+      })
+  }
+}
 </script>
 
 <style scoped>
@@ -78,6 +106,19 @@ const searching = ref('')
   display: flex;
   justify-content: flex-start;
   gap: 5%;
-  margin-bottom: 3%;
+}
+
+.delete-btn {
+  padding: 0.5rem 1rem;
+  margin-top: 3%;
+  background-color: red;
+  color: white;
+  border: none;
+  border-radius: 0.375rem;
+  cursor: pointer;
+}
+
+.delete-btn:hover {
+  background-color: rgb(207, 7, 7);
 }
 </style>
